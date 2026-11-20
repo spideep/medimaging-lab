@@ -13,10 +13,8 @@ services:
       ORTHANC__DICOM_WEB__ROOT: "/dicom-web/"
       ORTHANC__DICOM_AET: "MEDIMAGING"
       ORTHANC__REGISTERED_USERS: '{ "medimaging": "${ORTHANC_PASSWORD:?Set ORTHANC_PASSWORD in .env}"}'
-
-ORTHANC__AUTHENTICATION_ENABLED: "true"
-
-ORTHANC__REMOTE_ACCESS_ALLOWED: "true"
+      ORTHANC__AUTHENTICATION_ENABLED: "true"
+      ORTHANC__REMOTE_ACCESS_ALLOWED: "true"
 
     volumes:
       - orthanc-data:/var/lib/orthanc/db
