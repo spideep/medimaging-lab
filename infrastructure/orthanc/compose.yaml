@@ -12,7 +12,7 @@ services:
       DICOM_WEB_PLUGIN_ENABLED: "true"
       ORTHANC__DICOM_WEB__ROOT: "/dicom-web/"
       ORTHANC__DICOM_AET: "MEDIMAGING"
-      ORTHANC__REGISTERED_USERS: '{ "medimaging": "dev-password-change-me" }'
+      ORTHANC__REGISTERED_USERS: '{ "medimaging": "${ORTHANC_PASSWORD:?Set ORTHANC_PASSWORD in .env}"}'
 
 ORTHANC__AUTHENTICATION_ENABLED: "true"
 
