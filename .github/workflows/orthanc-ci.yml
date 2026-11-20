@@ -1,0 +1,72 @@
+name: OrthanC DICOMweb CI
+
+on:
+  push:
+    paths:
+      - "infrastructure/orthanc/**"
+      - ".github/workflows/orthanc-ci.yml"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  orthanc-integration:
+    runs-on: ubuntu-24.04
+
+    env:
+      ORTHANC_PASSWORD: ci-test-password
+    
+    defaults:
+      run:
+        working-directory: infrastructure/orthanc
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Validate Docker Compose
+        run: docker compose config --quiet
+      
+      - name: Start OrthanC
+        run: docker compose up -d
+      
+      - name: Wait for OrthanC
+        run: |
+          for i in {1..30}; do
+            if curl --silent --fail \
+              -u "medimaging:${ORTHANC_PASSWORD}" \
+              http://localhost:8042/system > /dev/null; then
+              echo "OrthanC is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "OrthanC failed to start"
+          exit 1
+      
+      - name: Test OrthanC REST API
+        run: |
+          curl --fail-with-body \
+            -u "medimaging:${ORTHANC_PASSWORD}" \
+            http://localhost:8042/system
+      
+      - name: Test authentication
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" \
+            http://localhost:8042/system)
+          
+          test "$status" = "401"
+      
+      - name: Test DICOMweb QIDO-RS
+        run: |
+          curl --fail-with-body \
+            -u "medimaging:${ORTHANC_PASSWORD}" \
+            -H "Accept: application/dicom+json" \
+            http://localhost:8042/dicom-web/studies
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs --tail=100
+      
+      - name: Stop containers
+        if: always()
+        run: docker compose down
