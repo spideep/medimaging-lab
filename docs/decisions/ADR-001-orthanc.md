@@ -1,13 +1,29 @@
-Decisión: utilizar OrthanC como servidor DICOM y fuente principal de almacenamiento de estudios médicos.
+# ADR-001: OrthanC como Servidor DICOM
 
-Justificación: soporta DICOM clásico, dispone de un plugin DICOMweb, permite integración con OHIF y se puede desplegar mediante Docker.
+Estado: Aceptado para MVP
 
-Consecuencias: nuestro backend Node.js no implementará un servidor DICOM propio. La seguridad, la persistencia y la interoperabilidad deberán configurarse y verificarse explícitamente.
+## Contexto
 
+MedImaging Lab requiere un sistema capaz de recibir, almacenar, buscar y devolver estudios de imágenes médicas usando estandards DICOM establecidos.
 
-**********
-Decisión: Utilizar GitHub actions y un CI para probar las partes más importantes del contenedor y orthanc en cuanto se actualice el código. 
+Implementando estas capaciodades directamente en Node.js introduciría complejidad innecesaria y responsabilidades de
 
-Justificante: Es una manera económica y automatizada de asegurarnos que el build de composer y la funcionalidad es mínimamente operativa tras los cambios que se susciten. 
+## Decisión
 
-Consecuencias: Nos ahorraremos la  implementación de las pruebas en un ambiente separado y correrlo manualmente. 
+Usar OrthanC como servidor DICOM, con su plugin DICOMweb activado, desplegado usando Docker Compose.
+
+OrthanC será responsable por el almacenamiento y la interoperabilidad DICOM. El backend Node.js manejará la lógica específica de la aplicación y la orquestación sin duplicar la funcionalidad de OrthanC.
+
+## Justificación
+
+- Soporte nativo para comunicación con DICOM tradicional, incluyendo operaciones DIMSE como C-STORE, C-FIND y C-MOVE.
+- Soporte DICOMweb a través de QIDO-RS, WADO-RS y STOW-RS.
+- Compatibilidad
+
+## Alternativas Consideradas
+
+## Consecuencias
+
+## Limitaciones
+
+## Decisiones Relacionadas
