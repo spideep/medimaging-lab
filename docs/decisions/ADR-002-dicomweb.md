@@ -20,12 +20,11 @@ OrthanC proveerá el almacenamiento de DICOM y los servicios de interoperabilida
 
 Los siguientes servicios DICOMweb serán utilizados:
 
-
-| Servicio | Propósito                             | Método HTTP |
-| -------- | -------------------------------------- | ------------ |
-| STOW-RS  | Almacenar instancias DICOM             | POST         |
-| QIDO-RS  | Buscar estudios, series e instancias   | GET          |
-| WADO-RS  | Obtención de objetos DICOM y metadata | GET          |
+| Servicio | Propósito | Método HTTP |
+| --- | --- | --- |
+| STOW-RS | Almacenar instancias DICOM | POST |
+| QIDO-RS | Buscar estudios, series e instancias | GET |
+| WADO-RS | Obtención de objetos DICOM y metadata | GET |
 
 Node.js implementará la lógica de negocio específica de la aplicación y la orquestación sin implementar un servidor DIMSE.
 
@@ -37,14 +36,13 @@ DIMSE (Elemento de Servicio de Mensaje DICOM) provee servicios estandarizados pa
 
 DICOMweb provee interfaces basadas en HTTP para almacenar, buscar y devolver recursos DICOM.
 
-
-| Operación           | DICOM tradicional / DIMSE | DICOMweb                     |
-| :------------------- | ------------------------- | ---------------------------- |
-| Guardar              | C-STORE                   | STOW-RS                      |
-| Buscar               | C-FIND                    | QIDO-RS                      |
-| Obtener              | C-MOVE/C-GET              | WADO-RS                      |
-| Conectividad         | Asociaciones DICOM        | HTTP/HTTPS                   |
-| Integración típica | Equipos y PACS            | Aplicaciones web y servicios |
+| Operación | DICOM tradicional / DIMSE | DICOMweb |
+| --- | --- | --- |
+| Guardar | C-STORE | STOW-RS |
+| Buscar | C-FIND | QIDO-RS |
+| Obtener | C-MOVE/C-GET | WADO-RS |
+| Conectividad | Asociaciones DICOM | HTTP/HTTPS |
+| Integración típica | Equipos y PACS | Aplicaciones web y servicios |
 
 Estos servicios proveen funcionalidades relacionadas aunque no son completamente equivalentes.
 
@@ -72,7 +70,7 @@ OrthanC provee ambas interfaces sin requerir que MedImaging Lab implemente los p
 
 #### 3.4 Por qué no implementar DIMSE en Node.js?
 
-Implementar un servidor DIMSE dedicado introduciría respondabilidades adicionales:
+Implementar un servidor DIMSE dedicado introduciría responsabilidades adicionales:
 
 - Administrar las asociaciones DICOM y los contextos de presentación.
 - Soportar el manejo de mensajes de servicio y respuestas DIMSE.
