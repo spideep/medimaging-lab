@@ -1,1 +1,29 @@
-// 
+{
+    "name": "medimaging-api",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=24 <25"
+    },
+    "scripts": {
+        "dev": "node --env-file=.env --import tsx src/server.ts",
+        "build": "tsc",
+        "start": "node dist/server.js",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:watch": "vitest"
+    },
+    "dependencies": {
+        "fastify": "^5.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.0",
+        "tsx": "^4.0.0",
+        "typescript": "^5.0.0",
+        "vitest": "^5.1.1"
+    },
+    "volta": {
+        "node": "24.22.3"
+    }
+}
