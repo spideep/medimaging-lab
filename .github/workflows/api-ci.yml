@@ -16,28 +16,28 @@ jobs:
     runs-on: ubuntu-24.04
 
     defaults:
-        run:
-            working-directory: apps/api
+      run:
+        working-directory: apps/api
 
     steps:
-        - name: Checkout repository
-          uses: actions/checkout@v6
+      - name: Checkout repository
+        uses: actions/checkout@v6
 
-        - name: Set up Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: "24"
-            cache: "npm"
-            cache-dependency-path: apps/api/package-lock.json
-        
-        - name: Install dependencies
-          run: npm ci 
-				
-        - name: Typescript validation
-          run: npm run typecheck
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: apps/api/package-lock.json
 
-        - name: Build application
-          run: npm run build
-        
-        - name: Run unit tests
-          run: npm test
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typescript validation
+        run: npm run typecheck
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm test
