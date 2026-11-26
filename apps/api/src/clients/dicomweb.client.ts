@@ -33,3 +33,48 @@ export async function getStudies(): Promise<DicomDataset[]> {
 
   return (await response.json()) as DicomDataset[];
 }
+
+export class StudyNotFoundError extends Error {
+  constructor() {
+    super("Study not found");
+    this.name = "StudyNotFoundError";
+  }
+}
+
+export async function getStudiesByUid(uid: string): Promise<DicomDataset> {
+  if (!ORTHANC_USER || !ORTHANC_PASSWORD) {
+    throw new Error("Missing Orthanc credentials");
+  }
+
+  const credentials = Buffer.from(
+    `${ORTHANC_USER}:${ORTHANC_PASSWORD}`,
+  ).toString("base64");
+
+  const url = new URL(`${ORTHANC_URL}/dicom-web/studies`);
+  url.searchParams.set("StudyInstanceUID", uid);
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Basic ${credentials}`,
+      Accept: "application/dicom+json",
+    },
+    signal: AbortSignal.timeout(10000),
+  });
+
+  // QIDO-RS puede devolver 204 cuando no hay coincidencias.
+  if (response.status === 204) {
+    throw new StudyNotFoundError();
+  }
+
+  if (!response.ok) {
+    throw new Error(`Orthanc request failed: HTTP ${response.status}`);
+  }
+
+  const studies = (await response.json()) as DicomDataset[];
+
+  if (studies.length === 0) {
+    throw new StudyNotFoundError();
+  }
+
+  return studies[0];
+}
