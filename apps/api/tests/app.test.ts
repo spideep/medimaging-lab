@@ -128,10 +128,6 @@ describe("MedImaging API", () => {
       url: "/api/studies/1.2.3.999",
     });
 
-    console.log("==========");
-    console.log(response);
-    console.log("==========");
-
     expect(response.statusCode).toBe(404);
     expect(response.json()).toEqual({ error: "Study not found" });
   });
